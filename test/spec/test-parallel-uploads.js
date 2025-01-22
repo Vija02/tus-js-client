@@ -1,11 +1,11 @@
-const { TestHttpStack, waitableFunction, wait, getBlob } = require('./helpers/utils')
-const tus = require('../..')
+import { Upload } from 'tus-js-client'
+import { TestHttpStack, getBlob, wait, waitableFunction } from './helpers/utils.js'
 
 describe('tus', () => {
   describe('parallel uploading', () => {
     it('should throw if incompatible options are used', () => {
       const file = getBlob('hello world')
-      const upload = new tus.Upload(file, {
+      const upload = new Upload(file, {
         endpoint: 'https://tus.io/uploads',
         parallelUploads: 2,
         uploadUrl: 'foo',
@@ -17,7 +17,7 @@ describe('tus', () => {
 
     it('should throw if `parallelUploadBoundaries` is passed without `parallelUploads`', () => {
       const file = getBlob('hello world')
-      const upload = new tus.Upload(file, {
+      const upload = new Upload(file, {
         endpoint: 'https://tus.io/uploads',
         parallelUploadBoundaries: [{ start: 0, end: 2 }],
       })
@@ -28,7 +28,7 @@ describe('tus', () => {
 
     it('should throw if `parallelUploadBoundaries` is not the same length as the value of `parallelUploads`', () => {
       const file = getBlob('hello world')
-      const upload = new tus.Upload(file, {
+      const upload = new Upload(file, {
         endpoint: 'https://tus.io/uploads',
         parallelUploads: 3,
         parallelUploadBoundaries: [{ start: 0, end: 2 }],
@@ -85,7 +85,7 @@ describe('tus', () => {
       }
       spyOn(options, 'onProgress')
 
-      const upload = new tus.Upload(file, options)
+      const upload = new Upload(file, options)
       upload.start()
 
       let req = await testStack.nextRequest()
@@ -224,7 +224,7 @@ describe('tus', () => {
         onSuccess: waitableFunction(),
       }
 
-      const upload = new tus.Upload(file, options)
+      const upload = new Upload(file, options)
       upload.start()
 
       let req = await testStack.nextRequest()
@@ -333,7 +333,7 @@ describe('tus', () => {
         onError: waitableFunction('onError'),
       }
 
-      const upload = new tus.Upload(file, options)
+      const upload = new Upload(file, options)
       upload.start()
 
       const req = await testStack.nextRequest()
@@ -367,7 +367,7 @@ describe('tus', () => {
       }
       spyOn(options, 'onProgress')
 
-      const upload = new tus.Upload(file, options)
+      const upload = new Upload(file, options)
 
       upload.resumeFromPreviousUpload({
         urlStorageKey: 'tus::fingerprint::1337',
@@ -458,7 +458,7 @@ describe('tus', () => {
       }
       spyOn(options, 'onProgress')
 
-      const upload = new tus.Upload(file, options)
+      const upload = new Upload(file, options)
       upload.start()
 
       let req = await testStack.nextRequest()

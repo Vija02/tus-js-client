@@ -1,5 +1,5 @@
-require('./test-common')
-require('./test-node-specific')
-require('./test-parallel-uploads')
-require('./test-terminate')
-require('./test-end-to-end')
+import './test-common.js'
+import './test-node-specific.js'
+import './test-parallel-uploads.js'
+import './test-terminate.js'
+import './test-end-to-end.js'
